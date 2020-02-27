@@ -4,27 +4,31 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.Select;
 
 import com.crm.qa.base.TestBase;
 
 public class ContactsPage extends TestBase {
 
-	@FindBy(xpath = "//td[contains(text(),'Contacts')]")
+	@FindBy(xpath = "//div[@class='ui header item mb5 light-black']")
 	WebElement contactsLabel;
 	
-	@FindBy(id="first_name")
+	@FindBy(xpath = "//button[contains(text(),'New')]")
+	WebElement newContactLink;
+	
+	@FindBy(name="first_name")
 	WebElement firstName;
 	
-	@FindBy(id="surname")
+	@FindBy(name="last_name")
 	WebElement lastName;
 	
-	@FindBy(name="client_lookup")
+	@FindBy(xpath="//div[@name='company']//input[@class='search']")
 	WebElement company;
 	
-	@FindBy(xpath = "//input[@type='submit' and @value='Save']")
+	@FindBy(xpath = "//button[@class='ui linkedin button']")
 	WebElement saveBtn;
 	
+	@FindBy(xpath="//div[@class='ui header item mb5 light-black']")
+	WebElement newcontact;
 	
 	
 	// Initializing the Page Objects:
@@ -37,25 +41,30 @@ public class ContactsPage extends TestBase {
 		return contactsLabel.isDisplayed();
 	}
 	
+	public void clickOnNewContactLink(){
+		newContactLink.click();
+		
+	}
 	
-	public void selectContactsByName(String name){
-		driver.findElement(By.xpath("//a[text()='"+name+"']//parent::td[@class='datalistrow']"
-				+ "//preceding-sibling::td[@class='datalistrow']//input[@name='contact_id']")).click();
+	public String selectContactsByName(String name){
+		return driver.findElement(By.xpath("//td[contains(text(),'"+name+"')]")).getText();
 	}
 	
 	
-	public void createNewContact(String title, String ftName, String ltName, String comp){
-		Select select = new Select(driver.findElement(By.name("title")));
-		select.selectByVisibleText(title);
-		
+	public void createNewContact(String ftName, String ltName, String comp) throws InterruptedException{
+				
 		firstName.sendKeys(ftName);
 		lastName.sendKeys(ltName);
 		company.sendKeys(comp);
 		saveBtn.click();
+		Thread.sleep(2000);
 		
 	}
 	
-	
+	public String newcontactvalidate() {
+		return newcontact.getText();
+		
+	}
 	
 
 }

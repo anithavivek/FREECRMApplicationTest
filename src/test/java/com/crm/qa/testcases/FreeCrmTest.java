@@ -10,6 +10,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -20,7 +21,7 @@ public class FreeCrmTest {
 
 	@BeforeMethod
 	public void setUp() throws Exception {
-		System.setProperty("webdriver.chrome.driver", "/Users/naveenkhunteta/Downloads/chromedriver");
+		System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/Drivers//chromedriver.exe");
 		driver = new ChromeDriver();
 		js = (JavascriptExecutor) driver;
 		driver.get("https://www.freecrm.com/index.html");
@@ -32,7 +33,7 @@ public class FreeCrmTest {
 		System.out.println("title is: " + title);
 		getRunTimeInfoMessage("info", title);
 
-		if (title.equals("Free CRM software in the cloud powers sales and customer serviceQQQQ")) {
+		if (title.equals("Cogmento CRM and Business Cloud Solutions")) {
 			getRunTimeInfoMessage("info", "title is correct!! YAY!!!");
 			Assert.assertTrue(true);
 		} else {
@@ -42,7 +43,12 @@ public class FreeCrmTest {
 		}
 
 	}
-
+	
+	@AfterMethod
+	public void tearDown(){
+		driver.quit();
+	}
+	
 	public static void getRunTimeInfoMessage(String messageType, String message) throws InterruptedException {
 		// Check for jQuery on the page, add it if need be
 		js.executeScript("if (!window.jQuery) {"
@@ -83,7 +89,7 @@ public class FreeCrmTest {
 		File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 		// now copy the screenshot to desired location using copyFile //method
 		FileUtils.copyFile(src, 
-				new File("/Users/NaveenKhunteta/Documents/MyPOMFramework/PageObjectModel/screenshots/" + fileName +".png"));
+				new File(System.getProperty("user.dir")+"/screenshots/" + fileName +".png"));
 
 	}
 
